@@ -1,0 +1,17 @@
+insert into users (username, password, first_name, last_name, age, email) VALUES
+('test_user1','$2a$12$BNWPOgGE8.bw5M24VGdpauAowSwOQ0nldwXM0ZjWJ/IMlNYd7LX4G', 'Ivan','Petrov',34,'iv.petrov@mail.ru');
+insert into users (username, password, first_name, last_name, age, email) VALUES
+('test_user2','$2a$12$BNWPOgGE8.bw5M24VGdpauAowSwOQ0nldwXM0ZjWJ/IMlNYd7LX4G', 'Stepan','Razin',28,'st.razin@mail.ru');
+
+пароль 100
+
+insert into roles (name) VALUES ('ROLE_USER'), ('ROLE_ADMIN');
+
+insert into users_roles (user_id, roles_id)
+values
+    (1,1),
+    (1,2),
+    (2,1);
+
+
+

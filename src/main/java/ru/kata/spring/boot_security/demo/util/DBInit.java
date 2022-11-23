@@ -8,7 +8,9 @@ import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 import javax.annotation.PostConstruct;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Component
@@ -48,8 +50,12 @@ public class DBInit {
 
         user.setId(2L);
 
+//        roleAdmin.setUsers(new HashSet<>(Collections.singleton(admin)));
+//        roleUser.setUsers(new HashSet<>(List.of(admin, user)));
+
         userService.saveUser(admin);
         userService.saveUser(user);
+
     }
 
 

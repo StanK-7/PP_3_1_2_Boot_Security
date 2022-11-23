@@ -2,7 +2,10 @@ package ru.kata.spring.boot_security.demo.service;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserRepository userRepository;
 
@@ -50,8 +53,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
+
     public User getUserByUsername(String username) {
-        return userRepository.getUserByUsername(username);
+
+        return (User) loadUserByUsername(username);
     }
 
     @Override
@@ -81,13 +86,11 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.getUserByUsername(username);
+        Optional <User> user = userRepository.findUserByUsername(username);
 
-        if (user == null) {
+        if (user.isEmpty()) {
             throw new UsernameNotFoundException(String.format("User '%s' not found!", username));
         }
-        return user;
+        return new ru.kata.spring.boot_security.demo.security.UserDetails(user.get());
     }
-
-
 }

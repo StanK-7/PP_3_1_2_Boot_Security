@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Transactional
     public void saveUser(User user) {
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-//        user.setRoles(Collections.singleton(new Role("ROLE_USER"))); // TODO
+
         userRepository.save(user);
     }
 
@@ -55,8 +55,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Transactional
 
     public User getUserByUsername(String username) {
-
-        return (User) loadUserByUsername(username);
+        return userRepository.findUserByUsername(username);
     }
 
     @Override
@@ -86,7 +85,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional <User> user = userRepository.findUserByUsername(username);
+        Optional <User> user = Optional.ofNullable(userRepository.findUserByUsername(username));
 
         if (user.isEmpty()) {
             throw new UsernameNotFoundException(String.format("User '%s' not found!", username));
